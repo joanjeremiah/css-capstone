@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap" rel="stylesheet">
+	<style type="text/css">
+		body,*
+		{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		::-webkit-scrollbar {
+		  width: 10px;
+		}
+		::-webkit-scrollbar-track {
+		  background: #f1f1f1;
+		}
+		::-webkit-scrollbar-thumb {
+		  	
+		  	background-color: #ff0000ad;
+		  	background-clip: content-box;  	
+		}
+		.fixed
+		{
+			position: fixed;
+			width: 100%;
+			height: 100vh;
+		}
+		header
+		{
+			width: 100%;
+			height: 8vh;
+			font-family: sans-serif;
+			font-size: 2.2vmin;
+			font-weight: 700;
+			background-color: white;
+			transition: all 750ms;
+		}
+		nav
+		{
+			width: 90%;
+			height: 100%;
+			margin: auto;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			z-index: 1;
+			transition: all 750ms;
+		}
+		nav .lang
+		{
+			display: flex;
+			font-size: 1.8vmin;
+			color: rgb(170,170,170);
+			gap: 1vmin;
+		}
+		nav .lang .active
+		{
+			color: black;
+		}
+		aside
+		{
+			width: 4vw;
+			height: 100vh;
+			position: absolute;
+		}
+		.left
+		{
+			top: 0;
+			left: 0;
+			transition: width 1s;
+			background-color: white;
+			pointer-events: none;
+			z-index: -1;
+		}
+		.left .con_left
+		{
+			display: grid;
+			grid-template-rows: 14vh 86vh;
+			grid-template-columns: 8vw 30% 40% 30%;
+			display: none;
+		} 
+		.left .con_left_1
+		{
+			grid-row: 2/3;
+			grid-column: 2/3;
+		}
+		.left .con_left_1 ul
+		{
+			height: 100%;
+			padding: 10% 0%;
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+		}
+		.left .con_left_1 ul li
+		{
+			font-family: 'Syne Mono', monospace;
+			font-size: 3vmin;
+			margin: 2.5vmin 0vmin;
+		}
+		
+		.left .con_left_2
+		{
+			grid-row: 2/3;
+			grid-column: 4/5;
+			width: 50%;
+			height: 84%;
+			background-color:  #ff0000ad;
+		}
+		.menu_open 
+		{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 4vw;
+			height: 100vh;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			cursor: pointer;
+			z-index: 1;
+			pointer-events: none;
+		}
+		.menu_open svg
+		{
+			width: 1rem;
+			height: 1rem;
+			margin-right: 1vmin;
+			pointer-events: auto;
+			transform-origin: right;
+			transition: transform 1.5s;
+		}
+		.menu_open p
+		{
+			font-size: 0.8rem;
+			pointer-events: auto;
+			display: flex;
+			flex-direction: column;
+		}
+		.menu_open p span
+		{
+			display: inline-block;
+			margin: 0.3vmin 0vmin; 
+			transition: all 1.5s;
+			font-weight: bolder;
+		}
+		.menu_open:hover ~ aside.left
+		{
+			width: 8vw;
+		}
+		.menu_open:hover span:nth-child(odd)
+		{
+			transform: translateX(100%);
+		}
+		.menu_open:hover svg
+		{
+			transform: scaleX(1.7);
+		}
+		.menu_open:hover svg path:nth-child(1)
+		{
+			d: path("M177 0H0V14.1022H177V0Z");			
+		}
+		.menu_open:hover svg path:nth-child(2)
+		{
+			d: path("M176.895 25.5179H71V39.621H176.895V25.5179Z");
+		}
+		.menu_open:hover svg path:nth-child(3)
+		{
+			d: path("M177 52.379H32V66.4821H177V52.379Z");
+		}
+		.menu_open:hover svg path:nth-child(4)
+		{
+			d: path('M176.895 77.8978H19V92H176.895V77.8978Z');
+		}
+		.right
+		{
+			top: 0;
+			right: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.right svg
+		{
+			margin: 1vmin 0vmin;
+			width: 0.7rem;
+			height: 0.7rem;
+		}
+		main
+		{
+			position: absolute;
+			top: 8vh;
+			left: 5vw;
+			width: 91vw;
+			height: 95vh;
+			background-color: teal;
+			z-index: -2;
+		}
+		.container
+		{
+			width: 91vw;
+			height: 95vh;
+			background-color: rgb(240,240,240);
+			position: fixed;
+		}
+		.container_2
+		{
+			width: 100%;
+			height: 100%;
+			background-color: #ff0000ad;
+			transition: width 750ms;
+		}
+		.container_2 
+		{
+			display: flex;
+			justify-content: center;
+			align-items: center;	
+		}
+		
+		.container_3
+		{
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.container_2 .container_4
+		{
+			width: 70%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			display: none;
+			
+		}
+		.container_2 .container_4 p
+		{
+			
+			
+		}
+		.container_2 .container_4 p span
+		{
+			display: block;
+			font-size: 4.5vmin;
+			transform: translateY(100%);
+			transition: all 0.5s;
+		}
+		.container_2 .container_4 p span:first-child
+		{
+			color: rgb(10,10,10);
+		}
+		.container_2 .container_4 p span:last-child
+		{
+			color: white;
+			transform: translateY(150%);
+		}
+		.container_3 h1
+		{
+			width: fit-content;
+			font-family: sans-serif;
+			font-size: 18vmin;	
+			transform-origin: left;
+			transition: all 750ms;
+		}
+		.container_3 p
+		{
+
+			transform: rotate(-90deg);
+			position: absolute;
+			top: 85%;
+			left: 40%;
+			color: white;
+			letter-spacing: 0.2vmin;
+			font-family: sans-serif;
+		}
+		.container_3 p span
+		{
+			display: inline-block;
+			margin: 0vmin 2vmin;
+			animation: scroll_arrow infinite 1s alternate;
+			animation-delay: 2s;
+		}
+		@keyframes scroll_arrow
+		{
+			from 
+			{
+				transform: translate(0%);
+			}
+			to
+			{
+				transform: translate(-100%);
+			}
+		}
+		.parallax
+		{
+			width: 100%;
+			height: 90vh;
+			background-image: url("https://images.pexels.com/photos/4014919/pexels-photo-4014919.jpeg?cs=srgb&dl=pexels-anna-shvets-4014919.jpg&fm=jpg");
+			background-size: cover;
+			background-attachment: fixed;
+			background-repeat: no-repeat;
+			background-position: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		section.one
+		{
+			width: 100%;
+			height: 100vh;
+			display: grid;
+			grid-template-columns: 20% 30% 50%;
+			background-color: rgb(250,250,250);
+			padding: 0vmin 0vmin 10vmin 0vmin;
+		}
+		section.two
+		{
+			width: 100%;
+			height: 100vh;
+			display: grid;
+			grid-template-columns: 50% 30% 20%;
+			grid-template-rows: 35% 65%;
+			grid-column-gap: 5vmin;
+			background-color: rgb(250,250,250);
+			padding: 0vmin 0vmin 10vmin 0vmin;
+		}
+		section.three
+		{
+			width: 100%;
+			height: 80vh;
+			background-color: rgb(250,250,250);
+			padding: 10vmin 0vmin 10vmin 0vmin;
+			position: relative;
+		}
+		section.one .title
+		{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			grid-column: 2/4;
+			color: #ff0000ad;
+			font-family: sans-serif;
+			font-size: 6vmin;
+			text-transform: uppercase;
+		}
+		section.two .title
+		{
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			grid-column: 1/2;
+			grid-row: 1/2;
+			color: #ff0000ad;
+			font-family: sans-serif;
+			font-size: 6vmin;
+			text-transform: uppercase;
+		}
+		section.one .para
+		{
+			grid-column: 2/3;
+			font-family: sans-serif;
+			padding: 0vmin 10vmin 0vmin 0vmin;
+		}
+		section.two .para
+		{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			grid-column: 2/3;
+			grid-row: 1/3;
+			font-family: sans-serif;
+			padding: 0vmin 10vmin 0vmin 0vmin;
+		}
+		section.one .para h2
+		{
+			color: black;
+			font-size: 4vmin;
+			font-weight: 900;
+			margin: 0vmin 0vmin 5vmin 0vmin;
+		}
+		section.two .para h2
+		{
+			color: black;
+			font-size: 4vmin;
+			font-weight: 900;
+			margin: 0vmin 0vmin 5vmin 0vmin;
+		}
+		section.one .para h2 span
+		{
+			color: #ff0000ad;
+		}
+		section.two .para h2 span
+		{
+			color: #ff0000ad;
+		}
+		section.one .para p
+		{
+			color: rgb(50,50,50);
+			font-size: 3vmin;
+		}
+		section.two .para p
+		{
+			color: rgb(50,50,50);
+			font-size: 3vmin;
+		}
+		section.one .img
+		{
+			width: 0%;
+			transition:width 2s;
+			background-image: url('https://images.pexels.com/photos/65016/pexels-photo-65016.jpeg?cs=srgb&dl=pexels-umberto-cancedda-65016.jpg&fm=jpg');
+			grid-column: 3/4;
+			background-repeat: no-repeat;
+			background-size: cover;	
+			background-attachment: fixed;	
+			background-origin: center;
+		}
+		section.two .img
+		{
+			transform: translateX(-100%);
+			transform-origin: right;
+			transition:transform 2s;
+			background-image: url('pexels-lisa-fotios-1083822.jpg');
+			background-repeat: no-repeat;
+			background-size: cover;
+			grid-column: 1/2;
+			grid-row: 2/3;
+			background-attachment: fixed;	
+			background-origin: center;
+		}
+		section.three h1
+		{
+			font-family: sans-serif;
+			font-size: 12vmin;
+			color: rgb(50,50,50);
+			position: absolute;
+			top:-10%;
+			left: 20%;
+		}
+		section.three .img
+		{
+			width: 100%;
+			height: 60vh;
+			background-image: url('pexels-eberhard-grossgasteiger-1183021.jpg');
+			background-size: cover;
+			background-attachment: fixed;
+
+		}
+	</style>
+</head>
+<body>
+<section class="fixed">
+	<header>
+	<nav>
+		<p>Joan Jeremiah J</p>
+		<div class="lang">
+			<p class="active">En.</p>
+			<p>Fr.</p>
+		</div>
+	</nav>
+	</header>
+	<div class="menu">
+		<div class="menu_open" onclick="func2()">
+			<svg class="menu" viewBox="0 0 90 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M89.79 0H0.123993V14.089H89.79V0Z" fill="black"/>
+				<path d="M89.737 25.494H25.29V39.584H89.737V25.494Z" fill="black"/>
+				<path d="M89.79 52.33H0.123993V66.42H89.79V52.33Z" fill="black"/>
+				<path d="M89.737 77.825H25.29V91.914H89.737V77.825Z" fill="black"/>
+			</svg>
+
+
+			<p><span>M</span><span>E</span><span>N</span><span>U</span></p>
+		</div>
+		
+		<aside class="left">
+			<div class="con_left">
+				<div class="con_left_1">
+					<ul>
+						<li>Sunt in</li>
+						<li>Occaecat cupidatat</li>
+						<li>Nostrud exercitation</li>
+						<li>Mollit anim</li>
+						<li>Quis nostrud</li>
+						<li>Anim id</li>
+					</ul>
+				</div>
+				<div class="con_left_2">
+					
+				</div>
+			</div>
+		</aside>
+	</div>
+	
+	
+	<aside class="right">
+		<svg id="Bold" enable-background="new 0 0 24 24" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="m15.997 3.985h2.191v-3.816c-.378-.052-1.678-.169-3.192-.169-3.159 0-5.323 1.987-5.323 5.639v3.361h-3.486v4.266h3.486v10.734h4.274v-10.733h3.345l.531-4.266h-3.877v-2.939c.001-1.233.333-2.077 2.051-2.077z"/></svg>
+		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+			<g>
+				<g>
+					<path d="M352,0H160C71.648,0,0,71.648,0,160v192c0,88.352,71.648,160,160,160h192c88.352,0,160-71.648,160-160V160
+						C512,71.648,440.352,0,352,0z M464,352c0,61.76-50.24,112-112,112H160c-61.76,0-112-50.24-112-112V160C48,98.24,98.24,48,160,48
+						h192c61.76,0,112,50.24,112,112V352z"/>
+				</g>
+			</g>
+			<g>
+				<g>
+					<path d="M256,128c-70.688,0-128,57.312-128,128s57.312,128,128,128s128-57.312,128-128S326.688,128,256,128z M256,336
+						c-44.096,0-80-35.904-80-80c0-44.128,35.904-80,80-80s80,35.872,80,80C336,300.096,300.096,336,256,336z"/>
+				</g>
+			</g>
+			<g>
+				<g>
+					<circle cx="393.6" cy="118.4" r="17.056"/>
+				</g>
+			</g>
+		</svg>
+		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+			<g>
+				<g>
+					<path d="M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016
+						c-20.288,12.096-42.688,20.64-66.56,25.408C411.872,60.704,384.416,48,354.464,48c-58.112,0-104.896,47.168-104.896,104.992
+						c0,8.32,0.704,16.32,2.432,23.936c-87.264-4.256-164.48-46.08-216.352-109.792c-9.056,15.712-14.368,33.696-14.368,53.056
+						c0,36.352,18.72,68.576,46.624,87.232c-16.864-0.32-33.408-5.216-47.424-12.928c0,0.32,0,0.736,0,1.152
+						c0,51.008,36.384,93.376,84.096,103.136c-8.544,2.336-17.856,3.456-27.52,3.456c-6.72,0-13.504-0.384-19.872-1.792
+						c13.6,41.568,52.192,72.128,98.08,73.12c-35.712,27.936-81.056,44.768-130.144,44.768c-8.608,0-16.864-0.384-25.12-1.44
+						C46.496,446.88,101.6,464,161.024,464c193.152,0,298.752-160,298.752-298.688c0-4.64-0.16-9.12-0.384-13.568
+						C480.224,136.96,497.728,118.496,512,97.248z"/>
+				</g>
+			</g>
+		</svg>
+	</aside>
+</section>
+<main>
+	<div class="container">
+		<div class="container_2">
+			<div class="container_4">
+				<p class="container_4_text"><span class="container_4_text1">I am Joan Jeremiah,a web developer.</span><span class="container_4_text2">I have expertise in designing and developing websites.</span></p></div>				
+		</div>
+		<div class="container_3">
+			
+			<h1 class="welcome_text">WEl<br>COME<span style="color: #ff0000ad;">.</span></h1>
+			<p class="scroll_text"><span>&#8592;</span> scroll</p>
+		</div>
+
+	</div>
+	<div class="parallax">
+	</div>
+	<section class="one">
+		<div class="title">
+			<h1>consec<br>tetur</h1>
+		</div>
+		<div class="para">
+			<h2>Eos et accusamus iusto odio<span>.</span></h2>
+			<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione</p>
+		</div>
+		<div class="img"></div>
+	</section>
+	<section class="two">
+		<div class="img"></div>
+		<div class="title">
+			<h1>Et<br>Harum</h1>
+		</div>
+		<div class="para">
+			<h2>Eos et accusamus iusto odio<span>.</span></h2>
+			<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione</p>
+		</div>	
+	</section>
+	<section class="three">
+		<h1>ID<br>EAS</h1>
+		<div class="img">
+			s
+		</div>
+	</section>
+</main>
+<script type="text/javascript">
+	vw = document.documentElement.clientWidth;
+	vh = document.documentElement.clientHeight;
+	main_container2 = document.querySelector(".container_2");
+	img = document.querySelectorAll(".img");
+	window.onscroll = function() {func1()}
+	window.onload = function() {main_container2.style.width = "50%"};
+	function func1()
+	{
+		if(document.body.scrollTop > 10 || document.documentElement.scrollTop > 10)
+		{
+			main_container2.style.width = "100%";
+			width1 = document.querySelector(".container").offsetWidth;
+			width2 = document.querySelector(".welcome_text").offsetWidth;
+			height1 = document.querySelector(".parallax").offsetHeight;	
+			height2 = document.querySelector(".one").offsetHeight;	
+			height3 = document.querySelector(".fixed").offsetHeight;	
+			height4 = document.querySelector(".parallax").offsetHeight;
+			console.log(height3);
+			console.log(height4);	
+			x = width1/2 -width2/2 + "px";
+			y = height1 + height2 + vh/2;
+			z = height3 + height4 -150;
+			document.querySelector(".welcome_text").style.transform = "translateX("+x+")";
+
+			document.querySelector(".container_4").style.display = "flex";
+			document.querySelector(".container_4_text").style.width = "60%";
+			window.setTimeout(function() {document.querySelector(".container_4_text1").style.transform = "translateY(0%)"},100);
+			window.setTimeout(function() {document.querySelector(".container_4_text2").style.transform = "translateY(0%)"},100);
+			document.querySelector(".scroll_text").style.display = "none";
+			if(document.body.scrollTop > 120 || document.documentElement.scrollTop > 120)
+			{
+				document.querySelector(".container").style.position = "static";
+			}
+			else
+			{
+				document.querySelector(".container").style.position = "fixed";
+			}
+			if(document.body.scrollTop > y || document.documentElement.scrollTop > y)
+			{
+				img[1].style.transform = "translateX(0%)";
+			}
+			else
+			{
+				img[1].style.transform = "translateX(-100%)";
+			}
+			if(document.body.scrollTop > z || document.documentElement.scrollTop > z)
+			{
+				img[0].style.width = "100%";
+			}
+			else
+			{
+				img[0].style.width = "0%";
+			}
+		}
+		
+		else if(window.scrollTop == 0 || document.documentElement.scrollTop == 0) {
+			document.querySelector(".container_4").style.display = "none";
+				
+			main_container2.style.width = "50%";
+			document.querySelector(".welcome_text").style.transform = "translateX(0%)";
+			document.querySelector(".scroll_text").style.display = "block";
+		}
+		else
+		{
+			
+			document.querySelector(".container_4_text1").style.transform = "translateY(100%)";
+			document.querySelector(".container_4_text2").style.transform = "translateY(150%)";
+			document.querySelector(".container_2").style.position = "static";
+		}
+	}
+	function func2()
+	{
+		a = 14*vh/100;
+		document.querySelector(".left").style.backgroundColor = "white";
+		
+		document.querySelector(".left").style.width = "100%";
+		document.querySelector("header").style.height = a +"px";
+		document.querySelector("nav").style.width = "80%";
+		window.setTimeout(function(){document.querySelector(".con_left").style.display = "grid"},1000);
+	}
+</script>
+
+</body>
+
+</html>
